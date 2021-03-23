@@ -7,7 +7,7 @@ survey_id = "SV_4TLSPrwNIjymdh3"
 ab_question_text = "Which of the following sounds the most natural?"
 mc_question_text= "Are there any errors in this speech sample?"
 trs_question_text = "Please type the sentence you hear in this audio sample."
-mushra_question_text = "How natural are the following speech recordings? <br> Reference: "
+mushra_question_text = "Bewerten Sie jede Sprachprobe anhand dessen, wie natürlich sie klingt im Vergleich mit der Referenzaufnahme. <br> Referenz: "
 mos_question_text = "Listen to this speech sample, then rate the quality of the speech."
 # the answer options for multiple choice questions
 mc_choice_text = ['Yes', 'No']
