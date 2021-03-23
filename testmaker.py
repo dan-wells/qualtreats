@@ -110,17 +110,29 @@ def mushra_q(new_q, urls, qid):
         choice['Display'] = get_play_button(url, str(i)) # add audio player as choice
         new_q['Payload']['Choices'][f'{i+1}'] = choice
         # set the choice logic to require that 1+ audio samples are rated == 100
-        (new_q['Payload']
-              ['Validation']
-              ['Settings']
-              ['CustomValidation']
-              ['Logic']
-              ['0']
-              [f'{i}']).update({ # update logic settings with Q & A numbers
-                    'QuestionID' : f"QID{qid}",
-                    'QuestionIDFromLocator' : f"QID{qid}",
-                    'ChoiceLocator' : f"q://QID{qid}/ChoiceNumericEntryValue/{i+1}",
-                    'LeftOperand' : f"q://QID{qid}/ChoiceNumericEntryValue/{i+1}"})
+        try:
+            (new_q['Payload']
+                  ['Validation']
+                  ['Settings']
+                  ['CustomValidation']
+                  ['Logic']
+                  ['0']
+                  [f'{i}']).update({ # update logic settings with Q & A numbers
+                        'QuestionID' : f"QID{qid}",
+                        'QuestionIDFromLocator' : f"QID{qid}",
+                        'ChoiceLocator' : f"q://QID{qid}/ChoiceNumericEntryValue/{i+1}",
+                        'LeftOperand' : f"q://QID{qid}/ChoiceNumericEntryValue/{i+1}"})
+        except KeyError:
+            # we probably have more than 5 systems to compare: add in missing stuff
+            new_q['Payload']['Configuration']['SliderStartPositions'][f'{i+1}'] = 0
+            new_q['Payload']['ChoiceOrder'].append(f'{i+1}')
+            new_valid = copy.deepcopy(new_q['Payload']['Validation']['Settings']['CustomValidation']['Logic']['0'][f'{i-1}'])
+            new_valid.update({ # update logic settings with Q & A numbers
+                'QuestionID' : f"QID{qid}",
+                'QuestionIDFromLocator' : f"QID{qid}",
+                'ChoiceLocator' : f"q://QID{qid}/ChoiceNumericEntryValue/{i+1}",
+                'LeftOperand' : f"q://QID{qid}/ChoiceNumericEntryValue/{i+1}"})
+            new_q['Payload']['Validation']['Settings']['CustomValidation']['Logic']['0'][f'{i}'] = new_valid
     return new_q
 
 
