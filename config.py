@@ -25,11 +25,11 @@ mos_file = "resources/mos-urls.txt"
 # mushra filenames should be the same across folders
 # audiofile urls should vary only by folder name
 # any number of folders can be specified
-mushra_files = "resources/mushra-urls.txt"
-mushra_root = "https://groups.inf.ed.ac.uk/cstr3/cvbotinh/Mushra_example/samples"
+mushra_files = "mushra_wavs.txt"
+mushra_root = "https://groups.inf.ed.ac.uk/cstr3/danwells/feats-to-speech"
 # the hidden reference folder should be included in both mushra_folders and mushra_ref_folder
-mushra_folders = ["G1","G1H","G1HA","G1TH", "G1THA"]
-mushra_ref_folder = "G1THA"
+mushra_folders = ["ref", "copy", "feats.4h", "feats.ft.15", "feats.ft.240", "phones.4h", "phones.ft.15", "phones.ft.240"]  
+mushra_ref_folder = "ref"
 
 # MC questions have sentence text embedded
 # this file should have a filename and corresponding sentence string per line
