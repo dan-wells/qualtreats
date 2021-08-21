@@ -1,4 +1,4 @@
-This is a tool for automating the process of creating online listening tests in Qualtrics.
+This is a tool for automating the process of creating online listening tests in Qualtrics. If you have any issues using it please submit here https://github.com/CSTR-Edinburgh/qualtreats/issues
 
 # Background
 This tool reduces number of manual steps required to create a functioning test. It works by generating a JSON file which Qualtrics will interpret to  produce a survey. It was originally created for use in evaluating text-to-speech systems, but has wider applications in speech technology and other audio-related fields.
@@ -50,7 +50,7 @@ This tool only uses packages from the Python standard library.
 
 Clone the <Name> GitHub repository with the command:
 
-`git clone https://github.com/jacobjwebber/qualtrics-listening-test-maker.git`
+`git clone https://github.com/CSTR-Edinburgh/qualtreats.git`
 
 ## Configuration
 
@@ -99,9 +99,9 @@ Flags:
 - `-mc` = multiple choice
 - `-trs` = audio transcription
 - `-mushra` = MUSHRA
-- `mos` = MOS
+- `-mos` = MOS
 
-Questions will be added to the output test in the order you supply the flags.
+Questions will be added to the output test for each flag supplied, following the order shown above.
 
 E.g. to create a test with MUSHRA then audio transcription questions, use the command:
 
