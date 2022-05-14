@@ -16,7 +16,9 @@ json_filename = "combined-template.json"
 save_as = "output-survey.qsf"
 # audio templates should not be changed
 audio_html_template = "audio_template.html"
+video_html_template = "video_template.html"
 play_button = "play_button.html"
+useVideo = True
 
 # load JSON template from file
 def get_basis_json():
@@ -27,6 +29,11 @@ def get_basis_json():
 def get_player_html(url):
     with open(audio_html_template) as html_file:
         return Template(html_file.read()).substitute(url=url)
+
+# standard video player for all question types except MUSHRA
+def get_video_player_html(url, qid):
+    with open(video_html_template) as html_file:
+        return Template(html_file.read()).substitute(url=url, qid=qid)
 
 # audio player with only play/pause controls for MUSHRA tests
 # to prevent participants identifying hidden reference by duration
@@ -48,7 +55,7 @@ def format_urls(question_type, file_1, file_2=None, file_3=None):
                         return [(gf(line1),gf(line2),gf(line3))
                                 for line1, line2, line3 in zip(f1, f2, f3)], []
         except:
-            if question_type == 'mos' or question_type == 'trs':
+            if question_type == 'mos' or question_type == 'trs' or question_type == 'trs_video':
                 return [l for l in f1], []
             elif question_type == 'mc':
                 names, urls = zip(*(l.replace('\n','').split(' ', 1)  for l in f1))
@@ -84,6 +91,11 @@ def make_question(qid, urls, basis_question,question_type,
                                    'QuestionText': question_text})
     new_q.update({'PrimaryAttribute' : f'QID{qid}',
                         'SecondaryAttribute' : f'QID{qid}: {question_type}' })
+
+    if useVideo:
+        new_q['Payload']['QuestionJS'] = new_q['Payload']['QuestionJS'].replace('play_button',f'play_button{qid}')
+        new_q['Payload']['QuestionJS'] = new_q['Payload']['QuestionJS'].replace('video',f'video{qid}')
+
     try: # call handler function for each question type
         question_function(new_q, urls, qid)
     except TypeError:
@@ -154,6 +166,8 @@ def main():
                         "(like error detection)")
     parser.add_argument("-trs", action='store_true',
                         help="make transcription questions (with text field)")
+    parser.add_argument("-trs_video", action='store_true',
+                        help="make transcription questions (with text field)")
     parser.add_argument("-mushra", action='store_true',
                         help="make MUSHRA questions with sliders")
     parser.add_argument("-mos", action='store_true',
@@ -169,6 +183,7 @@ def main():
                      'abc':[config.abc_file1, config.abc_file2, config.abc_file3],
                      'mc':[config.mc_file],
                      'trs':[config.trs_file],
+                     'trs_video':[config.trs_video_file],
                      'mushra':[config.mushra_files],
                      'mos':[config.mos_file]
                      }
@@ -199,6 +214,7 @@ def main():
     basis_question_dict = {'ab': elements[12],
                            'mc': elements[8],
                            'trs':elements[11],
+                           'trs_video':elements[14],
                            'abc': elements[13],
                            'mushra': elements[9],
                            'mos':elements[10]}
@@ -227,6 +243,8 @@ def main():
                             {'$sentence'}{get_player_html('$urls')}</em>",
                     'trs': f"{config.trs_question_text}\
                              {get_player_html('$urls')}",
+                    'trs_video': f"{get_video_player_html('$urls', '$qid')}\
+                            {config.trs_question_text}",
                     'mushra': f"{config.mushra_question_text}\
                                 {get_play_button('$ref_url', '$ref_id')}",
                     'mos': f"{config.mos_question_text}\
@@ -237,6 +255,7 @@ def main():
                     'abc': ab_q,
                     'mc': None,
                     'trs': None,
+                    'trs_video': None,
                     'mushra': mushra_q,
                     'mos': None}
 
@@ -259,7 +278,8 @@ def main():
             text = Template(q_text_dict[arg]).substitute(ref_url=ref_url,
                                                          ref_id=mushra_ref_id,
                                                          urls=url_set,
-                                                         sentence=sentence
+                                                         sentence=sentence,
+                                                         qid=str(q_counter)
                                                          )
             # make a new question and add it to the list of questions
             questions.append(make_question(

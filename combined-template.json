@@ -733,6 +733,44 @@
                     "TotalRandSubset": ""
                 }
             }
+        },
+        {
+            "SurveyID": "SV_82GxylVdVIF3r7v",
+            "Element": "SQ",
+            "PrimaryAttribute": "QID3",
+            "SecondaryAttribute": "Please transcribe this speech sample.",
+            "TertiaryAttribute": null,
+            "Payload": {
+                "QuestionText": "Please transcribe this speech sample.",
+                "DefaultChoices": false,
+                "DataExportTag": "Q3",
+                "QuestionType": "TE",
+                "Selector": "SL",
+                "Configuration": {
+                    "QuestionDescriptionOption": "UseText"
+                },
+                "QuestionDescription": "Please transcribe this speech sample.",
+                "Validation": {
+                    "Settings": {
+                        "ForceResponse": "ON",
+                        "ForceResponseType": "ON",
+                        "Type": "None"
+                    }
+                },
+                "GradingData": [],
+                "Language": [],
+                "NextChoiceId": 4,
+                "NextAnswerId": 1,
+                "SearchSource": {
+                    "AllowFreeResponse": "false"
+                },
+                "QuestionID": "QID3",
+                "QuestionJS": "Qualtrics.SurveyEngine.addOnload(function()\n{\n\t\/*Place your JavaScript here to run when the page loads*\/\n\n});\n\nQualtrics.SurveyEngine.addOnReady(function()\n{\n\/*Place your JavaScript here to run when the page is fully displayed*\/\nvar playButton = document.getElementById(\"play_button\");\n\nplayButton.addEventListener(\"click\", function() {\n\nif (video.ended == false){\n  video.play();} \nif (video.playing == true) {\n  jQuery(\"video\").on('play', function() {jQuery(\"video\")[0].style.pointerEvents = \"none\"});\n  playButton.innerHTML = \"Playing video\";} \nif (video.ended == true) {\n  document.getElementById(\"play_button\").disabled = true;\n  playButton.innerHTML = \"Video ended\";} \n\n});\n\n});\n\nQualtrics.SurveyEngine.addOnUnload(function()\n{\n  \/*Place your JavaScript here to run when the page is unloaded*\/\n\n});",
+                    "DataVisibility": {
+                    "Private": false,
+                    "Hidden": false
+                }
+            }
         }
     ]
 }

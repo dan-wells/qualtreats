@@ -98,6 +98,7 @@ Flags:
 - `-abc` = A/B/C preference
 - `-mc` = multiple choice
 - `-trs` = audio transcription
+- `-trs_video` = video transcription
 - `-mushra` = MUSHRA
 - `-mos` = MOS
 
