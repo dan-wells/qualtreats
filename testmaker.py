@@ -148,6 +148,24 @@ def make_blocks(num_questions, basis_blocks):
         block_element['QuestionID'] = f'QID{i}'
         block_elements.append(block_element)
     new_blocks['Payload'][0]['BlockElements'] = block_elements
+
+
+    ### Testing adding new blocks - WIP
+    # new_blocks['Payload'][1]['BlockElements'] = block_elements
+    # block = []
+    # block['Type'] = "Standard"
+    # block["Description"] = "My block",
+    # block["Description"]
+    #                 "ID": "BL_b9JrFiAUwvf53RH",
+    #                 "BlockElements": [
+    #                     {
+    #                         "Type": "Question",
+    #                         "QuestionID": "QID2"
+    #                     }
+    #                 ]
+    #             }
+    # new_blocks['Payload'].append() ['BlockElements'] = block_elements
+
     return new_blocks
 
 # sets the survey ID for any object which needs it
@@ -172,8 +190,10 @@ def main():
                         help="make MUSHRA questions with sliders")
     parser.add_argument("-mos", action='store_true',
                         help="make Mean Opinion Score questions with sliders")
-
+    parser.add_argument("-name", dest='survey_name', default='survey_name', help="survey name")
+    
     args = parser.parse_args()
+    survey_name = args.survey_name
 
     # get only args which were specified on command line
     args = [key for key, value in vars(args).items() if value==True]
@@ -318,6 +338,8 @@ def main():
     # Not strictly necessary as we didn't do deep copies of elements
     out_json = basis_json
     out_json['SurveyElements'] = elements
+
+    out_json["SurveyEntry"]["SurveyName"]= survey_name
 
     print(f'Generated survey with {survey_length} questions')
     with open(save_as, 'w+') as outfile:
