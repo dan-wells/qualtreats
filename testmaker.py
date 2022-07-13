@@ -139,35 +139,51 @@ def mushra_q(new_q, urls, qid):
 
 
 # make n new blocks according to the survey_length
-def make_blocks(num_questions, basis_blocks, qcounter):
-    print(qcounter)
+def make_blocks(num_questions, basis_blocks, qinitial):
     new_blocks = basis_blocks
     block_elements = []
-    for i in range(qcounter,qcounter+num_questions):
+    for i in range(qinitial,qinitial+num_questions):
         block_element = OrderedDict()
         block_element['Type'] = 'Question'
         block_element['QuestionID'] = f'QID{i}'
         block_elements.append(block_element)
     new_blocks['Payload'][0]['BlockElements'] = block_elements
 
+    return new_blocks
 
-    ### Testing adding new blocks - WIP
-    # new_blocks['Payload'][1]['BlockElements'] = block_elements
-    # block = []
-    # block['Type'] = "Standard"
-    # block["Description"] = "My block",
-    # block["Description"]
-    #                 "ID": "BL_b9JrFiAUwvf53RH",
-    #                 "BlockElements": [
-    #                     {
-    #                         "Type": "Question",
-    #                         "QuestionID": "QID2"
-    #                     }
-    #                 ]
-    #             }
-    # new_blocks['Payload'].append() ['BlockElements'] = block_elements
+# make n new blocks according to the survey_length
+def make_multiple_blocks(num_questions_per_block, basis_blocks, qinitial, num_blocks):
+
+    new_blocks = basis_blocks
+
+    qcounter = qinitial
+    for j in range(num_blocks):
+
+        block_elements = []
+        for i in range(qcounter,qcounter+num_questions_per_block):
+            block_element = OrderedDict()
+            block_element['Type'] = 'Question'
+            block_element['QuestionID'] = f'QID{i}'
+            block_elements.append(block_element)
+
+        new_block = {}
+        new_block['BlockElements'] = block_elements
+        new_block['Type'] = "Standard"
+        new_block["Description"] = f"Block {j+1}"
+        new_block["ID"] = new_blocks['Payload'][0]["ID"] + f"_{j+1}"
+
+        if j>0: # create new blocks
+            new_blocks['Payload'].append(new_block)
+        else:
+            new_block['Type'] = "Default"
+            new_block["ID"] = new_blocks['Payload'][0]["ID"]
+            new_blocks['Payload'][0] = new_block
+        
+        # print(new_blocks['Payload'][j])
+        qcounter += num_questions_per_block
 
     return new_blocks
+    
 
 # sets the survey ID for any object which needs it
 def set_id(obj):
@@ -193,10 +209,12 @@ def main():
                         help="make Mean Opinion Score questions with sliders")
     parser.add_argument("-name", dest='survey_name', default='survey_name', help="survey name")
     parser.add_argument("-qinitial", dest='qinitial', default='1', help="question counter initial value")
+    parser.add_argument("-nblocks", dest='nblocks', default='1', help="number of blocks")
 
     args = parser.parse_args()
     survey_name = args.survey_name
     qinitial = int(args.qinitial)
+    nblocks = int(args.nblocks)
 
     # get only args which were specified on command line
     args = [key for key, value in vars(args).items() if value==True]
@@ -329,7 +347,14 @@ def main():
     survey_length = len(questions)
 
     # Create all the items in survey elements, with helper function where doing so is not trivial
-    blocks = make_blocks(survey_length, basis_blocks, qinitial)
+    if nblocks==1:
+        num_questions_per_block = survey_length
+        blocks = make_blocks(survey_length, basis_blocks, qinitial)
+    else:
+        assert (survey_length % nblocks) == 0
+        num_questions_per_block = int(survey_length/nblocks)
+        blocks = make_multiple_blocks(num_questions_per_block, basis_blocks, qinitial, nblocks)
+
     flow = basis_flow
     flow['Payload']['Properties']['Count'] = survey_length
     survey_count = basis_survey_count
@@ -345,6 +370,9 @@ def main():
     out_json["SurveyEntry"]["SurveyName"]= survey_name
 
     print(f'Generated survey with {survey_length} questions')
+    print(f"Number of blocks: {nblocks}")
+    print(f"Number of questions per block: {num_questions_per_block}")
+
     with open(save_as, 'w+') as outfile:
         json.dump(out_json, outfile, indent=4)
 
