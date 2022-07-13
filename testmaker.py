@@ -139,10 +139,11 @@ def mushra_q(new_q, urls, qid):
 
 
 # make n new blocks according to the survey_length
-def make_blocks(num_questions, basis_blocks):
+def make_blocks(num_questions, basis_blocks, qcounter):
+    print(qcounter)
     new_blocks = basis_blocks
     block_elements = []
-    for i in range(1,num_questions+1):
+    for i in range(qcounter,qcounter+num_questions):
         block_element = OrderedDict()
         block_element['Type'] = 'Question'
         block_element['QuestionID'] = f'QID{i}'
@@ -191,11 +192,11 @@ def main():
     parser.add_argument("-mos", action='store_true',
                         help="make Mean Opinion Score questions with sliders")
     parser.add_argument("-name", dest='survey_name', default='survey_name', help="survey name")
-    parser.add_argument("-qcounter", dest='qcounter', default='1', help="question counter initial value")
+    parser.add_argument("-qinitial", dest='qinitial', default='1', help="question counter initial value")
 
     args = parser.parse_args()
     survey_name = args.survey_name
-    qcounter = int(args.qcounter)
+    qinitial = int(args.qinitial)
 
     # get only args which were specified on command line
     args = [key for key, value in vars(args).items() if value==True]
@@ -285,7 +286,7 @@ def main():
     questions = []
 
     # create counters to use when indexing optional lists
-    q_counter = qcounter # qualtrics question numbering starts at 1
+    q_counter = qinitial # qualtrics question numbering starts at 1
     mc_counter = 0
     mushra_counter = 0
 
@@ -328,7 +329,7 @@ def main():
     survey_length = len(questions)
 
     # Create all the items in survey elements, with helper function where doing so is not trivial
-    blocks = make_blocks(survey_length, basis_blocks)
+    blocks = make_blocks(survey_length, basis_blocks, qinitial)
     flow = basis_flow
     flow['Payload']['Properties']['Count'] = survey_length
     survey_count = basis_survey_count
