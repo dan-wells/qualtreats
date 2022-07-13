@@ -108,6 +108,9 @@ E.g. to create a test with MUSHRA then audio transcription questions, use the co
 
 `python testmaker.py -mushra -trs`
 
+To create questions starting from a number different than 1:
+`python testmaker.py -trs_video -qcounter 61`
+
 <img src="https://raw.githubusercontent.com/evelyndjwilliams/readme-gifs/main/run-testmaker.gif" width="420" height="200">
 
 <br>
