@@ -109,10 +109,13 @@ E.g. to create a test with MUSHRA then audio transcription questions, use the co
 `python testmaker.py -mushra -trs`
 
 To create questions starting from a number different than 1:
+
 `python testmaker.py -trs_video -qinitial 61`
 
 To group questions into blocks (to allow block randomisation):
+
 `python testmaker.py -trs_video -nblocks 3`
+
 This will divide the total number of questions (i.e. the number of lines in the resource url file) into nblocks
 
 <img src="https://raw.githubusercontent.com/evelyndjwilliams/readme-gifs/main/run-testmaker.gif" width="420" height="200">
