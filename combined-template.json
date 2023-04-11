@@ -619,6 +619,94 @@
                     "TotalRandSubset": ""
                 }
             }
+        },
+        {
+            "SurveyID": "SV_38mXhInx3FRrvts",
+            "Element": "SQ",
+            "PrimaryAttribute": "QID1",
+            "SecondaryAttribute": "Here is the question prompt",
+            "TertiaryAttribute": null,
+            "Payload": {
+                "QuestionText": "Here is the question prompt",
+                "DefaultChoices": false,
+                "DataExportTag": "Q1",
+                "QuestionID": "QID1",
+                "QuestionType": "Matrix",
+                "Selector": "MaxDiff",
+                "Configuration": {
+                    "QuestionDescriptionOption": "UseText",
+                    "TextPosition": "inline",
+                    "ChoiceColumnWidth": 25,
+                    "RepeatHeaders": "none",
+                    "WhiteSpace": "OFF",
+                    "MobileFirst": true
+                },
+                "QuestionDescription": "Here is the question prompt",
+                "Choices": {
+                    "1": {
+                        "Display": "<audio controls=\"\"><source src=\"http://groups.inf.ed.ac.uk/cstr3/cvbotinh/SM/RQ4/SystemComparison/test1/wavs/1book/CB-EM-02-53.wav\" type=\"audio/wav\"></audio>",
+                        "ExclusiveAnswer": true
+                    },
+                    "2": {
+                        "Display": "B",
+                        "ExclusiveAnswer": true
+                    },
+                    "3": {
+                        "Display": "C",
+                        "ExclusiveAnswer": true
+                    },
+                    "4": {
+                        "Display": "D",
+                        "ExclusiveAnswer": true
+                    }
+                },
+                "ChoiceOrder": [
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "Validation": {
+                    "Settings": {
+                        "ForceResponse": "ON",
+                        "ForceResponseType": "ON",
+                        "Type": "None"
+                    }
+                },
+                "GradingData": [],
+                "Language": [],
+                "NextChoiceId": 5,
+                "NextAnswerId": 3,
+                "Answers": {
+                    "1": {
+                        "Display": "Best",
+                        "ExclusiveAnswer": true
+                    },
+                    "2": {
+                        "Display": "Worst",
+                        "ExclusiveAnswer": true
+                    }
+                },
+                "AnswerOrder": [
+                    1,
+                    2
+                ],
+                "ChoiceDataExportTags": false,
+                "DataVisibility": {
+                    "Private": false,
+                    "Hidden": false
+                },
+                "Randomization": {
+                    "Advanced": null,
+                    "TotalRandSubset": "",
+                    "Type": "All"
+                },
+                "AnswerRandomization": {
+                    "Advanced": null,
+                    "TotalRandSubset": "",
+                    "Type": "None"
+                }
+            }
         }
     ]
 }

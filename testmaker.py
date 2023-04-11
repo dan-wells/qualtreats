@@ -34,7 +34,7 @@ def get_play_button(url, n): # player n associates play button with a specific a
         return Template(html_file.read()).substitute(url=url, player=n)
 
 # makes lists of formatted urls from the filenames in the config file
-def format_urls(question_type, file_1, file_2=None, file_3=None):
+def format_urls(question_type, file_1, file_2=None, file_3=None, file_4=None):
     with open(file_1) as f1:
         try:
             with open(file_2) as f2: # only -ab & -abc have >1 url file
@@ -46,6 +46,17 @@ def format_urls(question_type, file_1, file_2=None, file_3=None):
                     with open(file_3) as f3: # returns list of url trios & empty list
                         return [(gf(line1),gf(line2),gf(line3))
                                 for line1, line2, line3 in zip(f1, f2, f3)], []
+                elif question_type == 'bws':
+                    # returns list of url 4-tuples & ids for transcripts
+                    with open(file_3) as f3, open(file_4) as f4:
+                        split = lambda x: x.strip().split(' ', 1)
+                        urls = []
+                        names = []
+                        for l1, l2, l3, l4 in zip(f1, f2, f3, f4):
+                            l_names, l_urls = zip(split(l1), split(l2), split(l3), split(l4))
+                            urls.append(l_urls)
+                            names.append(l_names[0])  # should be same utt id per file
+                        return urls, names
         except:
             if question_type == 'mos' or question_type == 'trs':
                 return [l for l in f1], []
@@ -136,6 +147,17 @@ def mushra_q(new_q, urls, qid):
             new_q['Payload']['Validation']['Settings']['CustomValidation']['Logic']['0'][f'{i}'] = new_valid
     return new_q
 
+# handler function for bws questions
+def bws_q(new_q, urls, qid=None):
+    choice_template = new_q['Payload']['Choices']['1']# make choice template
+    # empty 'Choices' so flexible number can be added using Choice template
+    new_q['Payload']['Choices'] = {}
+    for i, url in enumerate(urls):
+        choice = copy.deepcopy(choice_template)
+        choice['Display'] = get_player_html(url) # add audio player as choice
+        new_q['Payload']['Choices'][f'{i+1}'] = choice
+    return new_q
+
 
 # make n new blocks according to the survey_length
 def make_blocks(num_questions, basis_blocks):
@@ -169,6 +191,8 @@ def main():
                         help="make MUSHRA questions with sliders")
     parser.add_argument("-mos", action='store_true',
                         help="make Mean Opinion Score questions with sliders")
+    parser.add_argument("-bws", action='store_true',
+                        help="make Best-Worse Scaling questions")
 
     args = parser.parse_args()
 
@@ -181,11 +205,11 @@ def main():
                      'mc':[config.mc_file],
                      'trs':[config.trs_file],
                      'mushra':[config.mushra_files],
-                     'mos':[config.mos_file]
+                     'mos':[config.mos_file],
+                     'bws':[config.bws_file1, config.bws_file2, config.bws_file3, config.bws_file4],
                      }
     # create a dictionary with key=command line arg & value= output of format_urls()
     # function's arguments are taken from argument_dict
-
     url_dict = {arg:format_urls(arg, *argument_dict[arg]) for arg in args}
 
     # format_urls() returns tuple of urls & anything else that's embedded in question
@@ -212,13 +236,19 @@ def main():
                            'trs':elements[11],
                            'abc': elements[13],
                            'mushra': elements[9],
-                           'mos':elements[10]}
+                           'mos':elements[10],
+                           'bws': elements[14],}
 
     # update multiple choice answer text in template to save computation
     (basis_question_dict['mc']['Payload']['Choices']
                         ['1']['Display']) = config.mc_choice_text[0]
     (basis_question_dict['mc']['Payload']['Choices']
                         ['2']['Display']) = config.mc_choice_text[1]
+    # ditto bws labels
+    (basis_question_dict['bws']['Payload']['Answers']
+                        ['1']['Display']) = config.bws_choice_text[0]
+    (basis_question_dict['bws']['Payload']['Answers']
+                        ['2']['Display']) = config.bws_choice_text[1]
     # mos scale
     (basis_question_dict['mos']['Payload']['Labels']
                         ['1']['Display']) = config.mos_choice_text[0]
@@ -252,7 +282,9 @@ def main():
                     'mushra': f"{config.mushra_question_text}\
                                 {get_play_button('$ref_url', '$ref_id')}",
                     'mos': f"{config.mos_question_text}\
-                             {get_player_html('$urls')}" }
+                             {get_player_html('$urls')}",
+                    'bws': config.bws_question_text,
+                   }
 
     # keys=question types and values= functions for making questions
     handler_dict = {'ab': ab_q,
@@ -260,7 +292,8 @@ def main():
                     'mc': None,
                     'trs': None,
                     'mushra': mushra_q,
-                    'mos': None}
+                    'mos': None,
+                    'bws': bws_q}
 
     # create list to store generated question blocks
     questions = []
