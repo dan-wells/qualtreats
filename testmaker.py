@@ -219,6 +219,17 @@ def main():
                         ['1']['Display']) = config.mc_choice_text[0]
     (basis_question_dict['mc']['Payload']['Choices']
                         ['2']['Display']) = config.mc_choice_text[1]
+    # mos scale
+    (basis_question_dict['mos']['Payload']['Labels']
+                        ['1']['Display']) = config.mos_choice_text[0]
+    (basis_question_dict['mos']['Payload']['Labels']
+                        ['2']['Display']) = config.mos_choice_text[1]
+    (basis_question_dict['mos']['Payload']['Labels']
+                        ['3']['Display']) = config.mos_choice_text[2]
+    (basis_question_dict['mos']['Payload']['Labels']
+                        ['4']['Display']) = config.mos_choice_text[3]
+    (basis_question_dict['mos']['Payload']['Labels']
+                        ['5']['Display']) = config.mos_choice_text[4]
 
     # turn off answer order randomisation for MC questions (ie Yes/No)
     # comment out these 2 lines to add randomisation

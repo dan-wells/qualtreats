@@ -11,6 +11,7 @@ mushra_question_text = "How natural are the following speech recordings? <br> Re
 mos_question_text = "Listen to this speech sample, then rate the quality of the speech."
 # the answer options for multiple choice questions
 mc_choice_text = ['Yes', 'No']
+mos_choice_text = ['Least natural', '', '', '', 'Most natural']
 
 # these files should contain the urls to be embedded in questions/choices
 # each file should have a filename and url per line, separated by whitespace
