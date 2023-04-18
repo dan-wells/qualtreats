@@ -18,7 +18,7 @@ save_as = "output-survey.qsf"
 audio_html_template = "audio_template.html"
 video_html_template = "video_template.html"
 play_button = "play_button.html"
-useVideo = True
+useVideo = False
 
 # load JSON template from file
 def get_basis_json():
@@ -270,6 +270,11 @@ def main():
     # comment out these 2 lines to add randomisation
     d = basis_question_dict['mc']['Payload']
     basis_question_dict['mc'].update({'Payload': {i:d[i] for i in d if i!='Randomization'}})
+
+    # turn off answer order randomisation for AB questions (ie A/B)
+    # comment out these 2 lines to add randomisation
+    d = basis_question_dict['ab']['Payload']
+    basis_question_dict['ab'].update({'Payload': {i:d[i] for i in d if i!='Randomization'}})
 
     # get basic survey components from elements JSON
     basis_blocks = elements[0]
