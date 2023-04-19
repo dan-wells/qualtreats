@@ -109,7 +109,9 @@ def ab_q(new_q, urls, qid=None):
     new_q['Payload']['Choices'] = {}
     for i, url in enumerate(urls):
         choice = copy.deepcopy(choice_template)
-        choice['Display'] = get_player_html(url) # add audio player as choice
+        player_html = get_player_html(url) # add audio player as choice
+        player_html = player_html.replace("audioX",f"audio{i+1}")
+        choice['Display'] = player_html
         new_q['Payload']['Choices'][f'{i+1}'] = choice
     return new_q
 
