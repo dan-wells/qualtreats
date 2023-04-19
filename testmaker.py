@@ -338,9 +338,10 @@ def main():
                                 "DataVisibility":[]
                 }
                 flow['Payload']['Flow'][1]['EmbeddedData'].append(embedded_data)
-                embedded_data["Description"] = qid+"_count2"
-                embedded_data["Field"] = qid+"_count2"
-                flow['Payload']['Flow'][1]['EmbeddedData'].append(embedded_data)
+                embedded_data2 = copy.deepcopy(embedded_data)
+                embedded_data2["Description"] = qid+"_count2"
+                embedded_data2["Field"] = qid+"_count2"
+                flow['Payload']['Flow'][1]['EmbeddedData'].append(embedded_data2)
 
             # make a new question and add it to the list of questions
             questions.append(make_question(
