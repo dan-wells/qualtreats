@@ -76,6 +76,26 @@
                         "ID": "BL_1MNtN4HBD9iSUXX",
                         "Type": "Block",
                         "FlowID": "FL_2"
+                    },
+                    {
+                        "Type":"EmbeddedData",
+                        "FlowID":"FL_Embedding",
+                        "EmbeddedData": [
+                            {
+                                "Description":"Clicks1",
+                                "Type":"Recipient",
+                                "Field":"Clicks1",
+                                "VariableType":"Ordinal",
+                                "DataVisibility":[]
+                            },
+                            {
+                                "Description":"Clicks2",
+                                "Type":"Recipient",
+                                "Field":"Clicks2",
+                                "VariableType":"Ordinal",
+                                "DataVisibility":[]
+                            }
+                        ]
                     }
                 ],
                 "Properties": {
@@ -688,6 +708,7 @@
                 "NextChoiceId": 3,
                 "NextAnswerId": 1,
                 "QuestionID": "QID1",
+                "QuestionJS": "Qualtrics.SurveyEngine.addOnload(function()\n{\n\t/*Place your JavaScript here to run when the page loads*/\n\n});\n\nQualtrics.SurveyEngine.addOnReady(function()\n{\n\t/*Place your JavaScript here to run when the page is fully displayed*/\n\n\tconst Audio1 = jQuery(\"#audio1\");\n\tconst Audio2 = jQuery(\"#audio2\");\n\tconst questionID = this.questionId;\n\t\t\t\n\tvar count1 = 0;\t\t\n\tvar count2 = 0;\n\t\n\tAudio1[0].on('ended', function() {\n        count1++;\n\t\tQualtrics.SurveyEngine.setEmbeddedData(questionID + '_count1', count1);\n\t\tQualtrics.SurveyEngine.setEmbeddedData(questionID + '_count2', count2);\n    });\n\t\n\tAudio2[0].on('ended', function() {\n        count2++;\t\t\n\t\tQualtrics.SurveyEngine.setEmbeddedData(questionID + '_count1', count1);\n\t\tQualtrics.SurveyEngine.setEmbeddedData(questionID + '_count2', count2);\t\t\n    });\n\t\n});\n\nQualtrics.SurveyEngine.addOnUnload(function()\n{\n\t/*Place your JavaScript here to run when the page is unloaded*/\n\t\t\t\t\t\t\t\t\t\t   \n});",
                 "Randomization": {
                     "Advanced": null,
                     "Type": "All",

@@ -313,6 +313,8 @@ def main():
     mc_counter = 0
     mushra_counter = 0
 
+    flow = basis_flow
+    
     for arg in args:
         for n, url_set in enumerate(url_dict[arg]['urls']): # for each url set for that question type
             # get MUSHRA reference url if the current flag == -mushra
@@ -327,6 +329,19 @@ def main():
                                                          sentence=sentence,
                                                          qid=str(q_counter)
                                                          )
+            if arg == 'ab': # create embedded data for ab question
+                qid = f'QID{q_counter}'
+                embedded_data = {"Description": qid+"_count1",
+                                "Type":"Recipient",
+                                "Field": qid+"_count1",
+                                "VariableType":"Ordinal",
+                                "DataVisibility":[]
+                }
+                flow['Payload']['Flow'][1]['EmbeddedData'].append(embedded_data)
+                embedded_data["Description"] = qid+"_count2"
+                embedded_data["Field"] = qid+"_count2"
+                flow['Payload']['Flow'][1]['EmbeddedData'].append(embedded_data)
+
             # make a new question and add it to the list of questions
             questions.append(make_question(
                                 # question number (starting at 1)
@@ -360,10 +375,17 @@ def main():
         num_questions_per_block = int(survey_length/nblocks)
         blocks = make_multiple_blocks(num_questions_per_block, basis_blocks, qinitial, nblocks)
 
-    flow = basis_flow
     flow['Payload']['Properties']['Count'] = survey_length
     survey_count = basis_survey_count
     survey_count['SecondaryAttribute'] = str(survey_length)
+
+    num_questions_per_page = 5
+    if nblocks != 1:
+        num_questions_per_page = nblocks
+    basis_SO = elements[3]
+    basis_SO['Payload']["QuestionsPerPage"] = str(num_questions_per_page)
+    elements[3] = basis_SO
+
     # add all the created elements together
     elements = [blocks, flow] + elements[2:7]  + questions + [rs]
 
@@ -377,6 +399,7 @@ def main():
     print(f'Generated survey with {survey_length} questions')
     print(f"Number of blocks: {nblocks}")
     print(f"Number of questions per block: {num_questions_per_block}")
+    print(f"Number of questions per page: {num_questions_per_page}")
 
     with open(save_as, 'w+') as outfile:
         json.dump(out_json, outfile, indent=4)#, encoding='utf8')
