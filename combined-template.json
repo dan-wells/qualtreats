@@ -803,6 +803,45 @@
                     "Hidden": false
                 }
             }
+        },
+        {
+            "SurveyID": "SV_cHXzGiZ8vIz4UNU",
+            "Element": "SQ",
+            "PrimaryAttribute": "QID888",
+            "SecondaryAttribute": "Timing",
+            "TertiaryAttribute": null,
+            "Payload": {
+                "Choices": {
+                    "1": {
+                        "Display": "First Click"
+                    },
+                    "2": {
+                        "Display": "Last Click"
+                    },
+                    "3": {
+                        "Display": "Page Submit"
+                    },
+                    "4": {
+                        "Display": "Click Count"
+                    }
+                },
+                "Configuration": {
+                    "MaxSeconds": "0",
+                    "MinSeconds": "0",
+                    "QuestionDescriptionOption": "UseText"
+                },
+                "DataExportTag": "Q888",
+                "DefaultChoices": false,
+                "GradingData": [],
+                "Language": [],
+                "NextAnswerId": 1,
+                "NextChoiceId": 16,
+                "QuestionDescription": "Timing",
+                "QuestionID": "QI888",
+                "QuestionText": "Timing",
+                "QuestionType": "Timing",
+                "Selector": "PageTimer"
+            }
         }
     ]
 }

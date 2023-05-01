@@ -92,6 +92,9 @@ def make_question(qid, urls, basis_question,question_type,
     new_q.update({'PrimaryAttribute' : f'QID{qid}',
                         'SecondaryAttribute' : f'QID{qid}: {question_type}' })
 
+    if question_type == 'Timing':
+        return new_q
+    
     if useVideo:
         new_q['Payload']['QuestionJS'] = new_q['Payload']['QuestionJS'].replace('play_button',f'play_button{qid}')
         new_q['Payload']['QuestionJS'] = new_q['Payload']['QuestionJS'].replace('video',f'video{qid}')
@@ -213,12 +216,15 @@ def main():
     parser.add_argument("-qinitial", dest='qinitial', default='1', help="question counter initial value")
     parser.add_argument("-nblocks", dest='nblocks', default='1', help="number of blocks")
     parser.add_argument("-num_questions_per_page", dest='num_questions_per_page', default='1', help="number of questions per page")
+    parser.add_argument("-add_timing_question", action='store_true', help="add a timing question in the end of every page")
 
     args = parser.parse_args()
     survey_name = args.survey_name
     qinitial = int(args.qinitial)
     nblocks = int(args.nblocks)
     num_questions_per_page = int(args.num_questions_per_page)
+    add_timing_question = args.add_timing_question
+    del args.add_timing_question
 
     # get only args which were specified on command line
     args = [key for key, value in vars(args).items() if value==True]
@@ -262,8 +268,9 @@ def main():
                            'trs_video':elements[15],
                            'abc': elements[14],
                            'mushra': elements[10],
-                           'mos':elements[11]}
-
+                           'mos':elements[11],
+                           'timing':elements[16]}
+        
     # update multiple choice answer text in template to save computation
     (basis_question_dict['mc']['Payload']['Choices']
                         ['1']['Display']) = config.mc_choice_text[0]
@@ -367,6 +374,26 @@ def main():
                            mc_counter+1 < len(url_dict['mc']['urls']) else 0)
             mushra_counter += (1 if arg == 'mushra' and
                                mushra_counter+1 < len(url_dict['mushra']['urls']) else 0)
+            
+            # Add a timing question in the end of every page
+            if ( n % num_questions_per_page == num_questions_per_page-1 ) and (add_timing_question):
+                
+                # make a new question and add it to the list of questions
+                questions.append(make_question(
+                    # question number (starting at 1)
+                    qid=q_counter,
+                    # set of audio urls
+                    urls='',
+                    # template for that question type
+                    basis_question=basis_question_dict['timing'],
+                    question_type='timing',
+                    # handler function for that question type
+                    question_function='',
+                    question_text='Timing'  # as set above
+                ))
+
+                q_counter += 1
+
 
     # survey_length is determined by number of questions created
     survey_length = len(questions)
@@ -401,7 +428,12 @@ def main():
     print(f'Generated survey with {survey_length} questions')
     print(f"Number of blocks: {nblocks}")
     print(f"Number of questions per block: {num_questions_per_block}")
-    print(f"Number of questions per page: {num_questions_per_page}")
+    if add_timing_question:
+        print(f"Number of questions per page: {num_questions_per_page} + 1 timing question")
+        print(f"Number of pages: {int(num_questions_per_block / (num_questions_per_page+1))}")
+    else:
+        print(f"Number of questions per page: {num_questions_per_page}")
+        print(f"Number of pages: {int(num_questions_per_block / num_questions_per_page)}")
 
     with open(save_as, 'w+') as outfile:
         json.dump(out_json, outfile, indent=4)#, encoding='utf8')
