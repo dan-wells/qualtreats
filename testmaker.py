@@ -212,11 +212,13 @@ def main():
     parser.add_argument("-name", dest='survey_name', default='survey_name', help="survey name")
     parser.add_argument("-qinitial", dest='qinitial', default='1', help="question counter initial value")
     parser.add_argument("-nblocks", dest='nblocks', default='1', help="number of blocks")
+    parser.add_argument("-num_questions_per_page", dest='num_questions_per_page', default='1', help="number of questions per page")
 
     args = parser.parse_args()
     survey_name = args.survey_name
     qinitial = int(args.qinitial)
     nblocks = int(args.nblocks)
+    num_questions_per_page = int(args.num_questions_per_page)
 
     # get only args which were specified on command line
     args = [key for key, value in vars(args).items() if value==True]
@@ -382,9 +384,6 @@ def main():
     survey_count = basis_survey_count
     survey_count['SecondaryAttribute'] = str(survey_length)
 
-    num_questions_per_page = 5
-    if nblocks != 1:
-        num_questions_per_page = nblocks
     basis_SO = elements[3]
     basis_SO['Payload']["QuestionsPerPage"] = str(num_questions_per_page)
     elements[3] = basis_SO
