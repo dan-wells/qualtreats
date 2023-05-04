@@ -354,6 +354,17 @@ def main():
                 embedded_data2["Field"] = qid+"_count2"
                 flow['Payload']['Flow'][1]['EmbeddedData'].append(embedded_data2)
 
+            if arg == 'mos':  # create embedded data for mos question
+                qid = f'QID{q_counter}'
+                embedded_data = {"Description": qid+"_count1",
+                                 "Type": "Recipient",
+                                 "Field": qid+"_count1",
+                                 "VariableType": "Ordinal",
+                                 "DataVisibility": []
+                                 }
+                flow['Payload']['Flow'][1]['EmbeddedData'].append(
+                    embedded_data)
+
             # make a new question and add it to the list of questions
             questions.append(make_question(
                                 # question number (starting at 1)
