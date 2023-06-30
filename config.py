@@ -9,8 +9,10 @@ mc_question_text= "Are there any errors in this speech sample?"
 trs_question_text = "Please type the sentence you hear in this audio sample."
 mushra_question_text = "How natural are the following speech recordings? <br> Reference: "
 mos_question_text = "Listen to this speech sample, then rate the quality of the speech."
+bws_question_text = "Listen to the speech samples below and mark the most and least natural."
 # the answer options for multiple choice questions
 mc_choice_text = ['Yes', 'No']
+bws_choice_text = ['Most natural', 'Least natural']
 
 # these files should contain the urls to be embedded in questions/choices
 # each file should have a filename and url per line, separated by whitespace
@@ -23,6 +25,10 @@ mc_file = "resources/mc-urls.txt"
 trs_file = "resources/trs-urls.txt"
 trs_video_file = "resources/trs_video-urls.txt"
 mos_file = "resources/mos-urls.txt"
+bws_file1 = "resources/bws-urls-1.txt"
+bws_file2 = "resources/bws-urls-2.txt"
+bws_file3 = "resources/bws-urls-3.txt"
+bws_file4 = "resources/bws-urls-4.txt"
 # mushra filenames should be the same across folders
 # audiofile urls should vary only by folder name
 # any number of folders can be specified

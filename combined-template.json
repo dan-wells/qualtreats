@@ -842,6 +842,95 @@
                 "QuestionType": "Timing",
                 "Selector": "PageTimer"
             }
+        },
+        {
+            "SurveyID": "SV_38mXhInx3FRrvts",
+            "Element": "SQ",
+            "PrimaryAttribute": "QID1",
+            "SecondaryAttribute": "Here is the question prompt",
+            "TertiaryAttribute": null,
+            "Payload": {
+                "QuestionText": "Here is the question prompt",
+                "DefaultChoices": false,
+                "DataExportTag": "Q1",
+                "QuestionID": "QID1",
+                "QuestionType": "Matrix",
+                "Selector": "MaxDiff",
+                "Configuration": {
+                    "QuestionDescriptionOption": "UseText",
+                    "TextPosition": "inline",
+                    "ChoiceColumnWidth": 25,
+                    "RepeatHeaders": "none",
+                    "WhiteSpace": "OFF",
+                    "MobileFirst": true
+                },
+                "QuestionJS": "Qualtrics.SurveyEngine.addOnload(function()\n{\n\t/*Place your JavaScript here to run when the page loads*/\n\n});\n\nQualtrics.SurveyEngine.addOnReady(function()\n{\n\t/*Place your JavaScript here to run when the page is fully displayed*/\n\n\tconst Audio1 = jQuery(\"#audio1\");\n\tconst Audio2 = jQuery(\"#audio2\");\n\tconst Audio3 = jQuery(\"#audio3\");\n\tconst Audio4 = jQuery(\"#audio4\");\n\tconst questionID = this.questionId;\n\t\t\t\n\tvar count1 = 0;\t\t\n\tvar count2 = 0;\n\t\n\tvar count3 = 0;\n\t\n\tvar count4 = 0;\n\t\n\tAudio1[0].on('ended', function() {\n        count1++;\n\t\tQualtrics.SurveyEngine.setEmbeddedData(questionID + '_count1', count1);\n    });\n\t\n\tAudio2[0].on('ended', function() {\n        count2++;\n\t\tQualtrics.SurveyEngine.setEmbeddedData(questionID + '_count2', count2);\t\t\n    });\n\t\nAudio3[0].on('ended', function() {\n        count3++;\n\t\tQualtrics.SurveyEngine.setEmbeddedData(questionID + '_count3', count3);\t\t\n    });\n\t\nAudio4[0].on('ended', function() {\n        count4++;\n\t\tQualtrics.SurveyEngine.setEmbeddedData(questionID + '_count4', count4);\t\t\n    });\n\t\n});\n\nQualtrics.SurveyEngine.addOnUnload(function()\n{\n\t/*Place your JavaScript here to run when the page is unloaded*/\n\t\t\t\t\t\t\t\t\t\t   \n});",
+                "QuestionDescription": "Here is the question prompt",
+                "Choices": {
+                    "1": {
+                        "Display": "<audio controls=\"\"><source src=\"http://groups.inf.ed.ac.uk/cstr3/cvbotinh/SM/RQ4/SystemComparison/test1/wavs/1book/CB-EM-02-53.wav\" type=\"audio/wav\"></audio>",
+                        "ExclusiveAnswer": true
+                    },
+                    "2": {
+                        "Display": "B",
+                        "ExclusiveAnswer": true
+                    },
+                    "3": {
+                        "Display": "C",
+                        "ExclusiveAnswer": true
+                    },
+                    "4": {
+                        "Display": "D",
+                        "ExclusiveAnswer": true
+                    }
+                },
+                "ChoiceOrder": [
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "Validation": {
+                    "Settings": {
+                        "ForceResponse": "ON",
+                        "ForceResponseType": "ON",
+                        "Type": "None"
+                    }
+                },
+                "GradingData": [],
+                "Language": [],
+                "NextChoiceId": 5,
+                "NextAnswerId": 3,
+                "Answers": {
+                    "1": {
+                        "Display": "Best",
+                        "ExclusiveAnswer": true
+                    },
+                    "2": {
+                        "Display": "Worst",
+                        "ExclusiveAnswer": true
+                    }
+                },
+                "AnswerOrder": [
+                    1,
+                    2
+                ],
+                "ChoiceDataExportTags": false,
+                "DataVisibility": {
+                    "Private": false,
+                    "Hidden": false
+                },
+                "Randomization": {
+                    "Advanced": null,
+                    "TotalRandSubset": "",
+                    "Type": "All"
+                },
+                "AnswerRandomization": {
+                    "Advanced": null,
+                    "TotalRandSubset": "",
+                    "Type": "None"
+                }
+            }
         }
     ]
 }
