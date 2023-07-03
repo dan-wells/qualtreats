@@ -124,12 +124,12 @@ def ab_q(new_q, urls, qid=None):
     for i, url in enumerate(urls):
         choice = copy.deepcopy(choice_template)
         player_html = get_player_html(url) # add audio player as choice
-        player_html = player_html.replace("audioX",f"audio{i+1}")
+        player_html = player_html.replace("audioX",f"QID{qid}_audio{i+1}")
         choice['Display'] = player_html
         new_q['Payload']['Choices'][f'{i+1}'] = choice
     return new_q
 
- # handler function for mushra questions
+# handler function for mushra questions
 def mushra_q(new_q, urls, qid):
     choice_template = new_q['Payload']['Choices']['1']# make choice template
     # empty 'Choices' so flexible number can be added using Choice template
@@ -161,7 +161,7 @@ def bws_q(new_q, urls, qid=None):
     for i, url in enumerate(urls):
         choice = copy.deepcopy(choice_template)
         player_html = get_player_html(url) # add audio player as choice
-        player_html = player_html.replace("audioX",f"audio{i+1}")
+        player_html = player_html.replace("audioX",f"QID{qid}_audio{i+1}")
         choice['Display'] = player_html
         new_q['Payload']['Choices'][f'{i+1}'] = choice
     return new_q
@@ -337,7 +337,7 @@ def main():
                     'mushra': f"{config.mushra_question_text}\
                                 {get_play_button('$ref_url', '$ref_id')}",
                     'mos': f"{config.mos_question_text}\
-                             {get_player_html('$urls')}",
+                             {get_player_html('$urls').replace('audioX', 'QID${qid}_audio1')}",
                     'bws': config.bws_question_text }
 
     # keys=question types and values= functions for making questions
