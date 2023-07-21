@@ -431,7 +431,7 @@ def main():
             mushra_counter += (1 if arg == 'mushra' and
                                mushra_counter+1 < len(url_dict['mushra']['urls']) else 0)
             
-            # Add a timing question in the end of every page
+            # Add a timing question in the end of every page (hidden n+1th question)
             if ( n % num_questions_per_page == num_questions_per_page-1 ) and (add_timing_question):
                 
                 # make a new question and add it to the list of questions
@@ -468,7 +468,10 @@ def main():
     survey_count['SecondaryAttribute'] = str(survey_length)
 
     basis_SO = elements[3]
-    basis_SO['Payload']["QuestionsPerPage"] = str(num_questions_per_page)
+    if add_timing_question:
+        basis_SO['Payload']["QuestionsPerPage"] = str(num_questions_per_page + 1)
+    else:
+        basis_SO['Payload']["QuestionsPerPage"] = str(num_questions_per_page)
     elements[3] = basis_SO
 
     # add all the created elements together
